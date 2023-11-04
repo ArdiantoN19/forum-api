@@ -26,9 +26,15 @@ describe("AddCommentReplyUseCase", () => {
     mockCommentRepository.verifyAvailableComment = jest
       .fn()
       .mockImplementation(() => Promise.resolve());
-    mockReplyRepository.addCommentReply = jest
-      .fn()
-      .mockImplementation(() => Promise.resolve(expectedAddedReply));
+    mockReplyRepository.addCommentReply = jest.fn().mockImplementation(() =>
+      Promise.resolve(
+        new AddedReply({
+          id: "reply-123",
+          content: useCasePayload.content,
+          owner: useCasePayload.owner,
+        })
+      )
+    );
 
     const addCommentReply = new AddCommentReplyUseCase({
       commentRepository: mockCommentRepository,
