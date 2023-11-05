@@ -1,4 +1,5 @@
 const CommentRepository = require("../../../Domains/comments/CommentRepository");
+const ReplyRepository = require("../../../Domains/replies/ReplyRepository");
 const ThreadRepository = require("../../../Domains/threads/ThreadRepository");
 const GetDetailThreadUseCase = require("../GetDetailThreadUseCase");
 
@@ -56,6 +57,7 @@ describe("GetDetailThreadUseCase", () => {
 
     const mockThreadRepository = new ThreadRepository();
     const mockCommentRepository = new CommentRepository();
+    const mockReplyRepository = new ReplyRepository();
 
     mockThreadRepository.getDetailThreadByThreadId = jest
       .fn()
@@ -82,7 +84,7 @@ describe("GetDetailThreadUseCase", () => {
           },
         ])
       );
-    mockThreadRepository.getRepliesCommentByThreadId = jest
+    mockReplyRepository.getRepliesCommentByThreadId = jest
       .fn()
       .mockImplementation(() =>
         Promise.resolve([
@@ -100,6 +102,7 @@ describe("GetDetailThreadUseCase", () => {
     const getDetailThreadUseCase = new GetDetailThreadUseCase({
       threadRepository: mockThreadRepository,
       commentRepository: mockCommentRepository,
+      replyRepository: mockReplyRepository,
     });
 
     // Action
@@ -116,12 +119,12 @@ describe("GetDetailThreadUseCase", () => {
     expect(mockCommentRepository.getCommentsByThreadId).toBeCalledWith(
       useCasePayload
     );
-    expect(mockThreadRepository.getRepliesCommentByThreadId).toBeCalledWith(
+    expect(mockReplyRepository.getRepliesCommentByThreadId).toBeCalledWith(
       useCasePayload
     );
     expect(mockThreadRepository.getDetailThreadByThreadId).toBeCalledTimes(1);
     expect(mockCommentRepository.getCommentsByThreadId).toBeCalledTimes(1);
-    expect(mockThreadRepository.getRepliesCommentByThreadId).toBeCalledTimes(1);
+    expect(mockReplyRepository.getRepliesCommentByThreadId).toBeCalledTimes(1);
   });
 
   it("should return deleted comment correctly", async () => {
@@ -168,6 +171,7 @@ describe("GetDetailThreadUseCase", () => {
 
     const mockThreadRepository = new ThreadRepository();
     const mockCommentRepository = new CommentRepository();
+    const mockReplyRepository = new ReplyRepository();
 
     mockThreadRepository.getDetailThreadByThreadId = jest
       .fn()
@@ -189,12 +193,12 @@ describe("GetDetailThreadUseCase", () => {
             id: "comment-123",
             username: "johndoe",
             date: "2021-08-08T07:22:33.555Z",
-            content: "**komentar telah dihapus**",
+            content: "content comment test",
             is_delete: true,
           },
         ])
       );
-    mockThreadRepository.getRepliesCommentByThreadId = jest
+    mockReplyRepository.getRepliesCommentByThreadId = jest
       .fn()
       .mockImplementation(() =>
         Promise.resolve([
@@ -203,7 +207,7 @@ describe("GetDetailThreadUseCase", () => {
             comment_id: "comment-123",
             date: "2021-08-08T07:59:48.766Z",
             username: "ardi",
-            content: "**balasan telah dihapus**",
+            content: "content reply comment test",
             is_delete: true,
           },
         ])
@@ -212,6 +216,7 @@ describe("GetDetailThreadUseCase", () => {
     const getDetailThreadUseCase = new GetDetailThreadUseCase({
       threadRepository: mockThreadRepository,
       commentRepository: mockCommentRepository,
+      replyRepository: mockReplyRepository,
     });
 
     // Action
@@ -228,11 +233,11 @@ describe("GetDetailThreadUseCase", () => {
     expect(mockCommentRepository.getCommentsByThreadId).toBeCalledWith(
       useCasePayload
     );
-    expect(mockThreadRepository.getRepliesCommentByThreadId).toBeCalledWith(
+    expect(mockReplyRepository.getRepliesCommentByThreadId).toBeCalledWith(
       useCasePayload
     );
     expect(mockThreadRepository.getDetailThreadByThreadId).toBeCalledTimes(1);
     expect(mockCommentRepository.getCommentsByThreadId).toBeCalledTimes(1);
-    expect(mockThreadRepository.getRepliesCommentByThreadId).toBeCalledTimes(1);
+    expect(mockReplyRepository.getRepliesCommentByThreadId).toBeCalledTimes(1);
   });
 });

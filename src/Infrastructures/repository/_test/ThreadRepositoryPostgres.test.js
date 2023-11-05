@@ -1,5 +1,4 @@
 const CommentTableTestHelper = require("../../../../tests/CommentTableTestHelper");
-const RepliesTableTestHelper = require("../../../../tests/RepliesTableTestHelper");
 const ThreadTableTestHelper = require("../../../../tests/ThreadTableTestHelper");
 const UsersTableTestHelper = require("../../../../tests/UsersTableTestHelper");
 const NotFoundError = require("../../../Commons/exceptions/NotFoundError");
@@ -13,7 +12,6 @@ describe("ThreadRepositoryPostgres", () => {
     await ThreadTableTestHelper.cleanTable();
     await UsersTableTestHelper.cleanTable();
     await CommentTableTestHelper.cleanTable();
-    await RepliesTableTestHelper.cleanTable();
   });
 
   afterAll(async () => {
@@ -135,6 +133,8 @@ describe("ThreadRepositoryPostgres", () => {
       await ThreadTableTestHelper.addThread({
         id: threadId,
         owner: "user-123",
+        title: "Thread title test",
+        body: "Thread body test",
       });
 
       const threadRepositoryPostgres = new ThreadRepositoryPostgres(
@@ -148,53 +148,14 @@ describe("ThreadRepositoryPostgres", () => {
 
       // Assert
       expect(detailThread).not.toBeUndefined();
+      expect(detailThread.id).toEqual("thread-123");
+      expect(detailThread.title).toEqual("Thread title test");
+      expect(detailThread.body).toEqual("Thread body test");
       expect(detailThread.id).toBeDefined();
       expect(detailThread.title).toBeDefined();
       expect(detailThread.body).toBeDefined();
       expect(detailThread.date).toBeDefined();
       expect(detailThread.username).toBeDefined();
-    });
-  });
-
-  describe("getRepliesCommentByThreadId function", () => {
-    it("should return replies comment correctly", async () => {
-      // Arrange
-      await UsersTableTestHelper.addUser({ id: "user-123" });
-      await ThreadTableTestHelper.addThread({
-        id: "thread-123",
-        owner: "user-123",
-      });
-      await CommentTableTestHelper.addComment({
-        id: "comment-123",
-        threadId: "thread-123",
-        owner: "user-123",
-      });
-      await RepliesTableTestHelper.addReply({
-        id: "reply-123",
-        owner: "user-123",
-        threadId: "thread-123",
-        commentId: "comment-123",
-      });
-      await RepliesTableTestHelper.addReply({
-        id: "reply-124",
-        owner: "user-123",
-        threadId: "thread-123",
-        commentId: "comment-123",
-      });
-
-      const threadRepositoryPostgres = new ThreadRepositoryPostgres(
-        pool,
-        () => {}
-      );
-
-      // Action
-      const replies =
-        await threadRepositoryPostgres.getRepliesCommentByThreadId(
-          "thread-123"
-        );
-
-      // Assert
-      expect(replies).toHaveLength(2);
     });
   });
 });

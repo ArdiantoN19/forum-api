@@ -17,9 +17,5 @@ describe("ThreadRepository interface", () => {
     await expect(
       threadRepository.getDetailThreadByThreadId("")
     ).rejects.toThrowError("THREAD_REPOSITORY.METHOD_NOT_IMPLEMENTED");
-
-    await expect(
-      threadRepository.getRepliesCommentByThreadId("")
-    ).rejects.toThrowError("THREAD_REPOSITORY.METHOD_NOT_IMPLEMENTED");
   });
 });

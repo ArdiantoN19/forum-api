@@ -231,6 +231,8 @@ describe("CommentRepositoryPostgres", () => {
       );
 
       // Assert
+      expect(comments[0].id).toEqual(exampleComment2.id);
+      expect(comments[1].id).toEqual(exampleComment1.id);
       expect(comments[0].id).toBeDefined();
       expect(comments[0].username).toBeDefined();
       expect(comments[0].date).toBeDefined();

@@ -91,6 +91,37 @@ describe("ReplyRepositoryPostgres", () => {
     });
   });
 
+  describe("getRepliesCommentByThreadId function", () => {
+    it("should return replies comment correctly", async () => {
+      // Arrange
+      await RepliesTableTestHelper.addReply({
+        id: "reply-123",
+        owner: "user-123",
+        threadId: "thread-123",
+        commentId: "comment-123",
+      });
+      await RepliesTableTestHelper.addReply({
+        id: "reply-124",
+        owner: "user-123",
+        threadId: "thread-123",
+        commentId: "comment-123",
+      });
+
+      const replyRepositoryPostgres = new ReplyRepositoryPostgres(
+        pool,
+        () => {}
+      );
+
+      // Action
+      const replies = await replyRepositoryPostgres.getRepliesCommentByThreadId(
+        "thread-123"
+      );
+
+      // Assert
+      expect(replies).toHaveLength(2);
+    });
+  });
+
   describe("verifyAvailableCommentReply function", () => {
     it("should throw NotFoundError when comment reply id not found", async () => {
       // Arrange
