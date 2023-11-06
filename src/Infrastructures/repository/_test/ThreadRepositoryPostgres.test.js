@@ -1,4 +1,3 @@
-const CommentTableTestHelper = require("../../../../tests/CommentTableTestHelper");
 const ThreadTableTestHelper = require("../../../../tests/ThreadTableTestHelper");
 const UsersTableTestHelper = require("../../../../tests/UsersTableTestHelper");
 const NotFoundError = require("../../../Commons/exceptions/NotFoundError");
@@ -11,7 +10,6 @@ describe("ThreadRepositoryPostgres", () => {
   afterEach(async () => {
     await ThreadTableTestHelper.cleanTable();
     await UsersTableTestHelper.cleanTable();
-    await CommentTableTestHelper.cleanTable();
   });
 
   afterAll(async () => {
@@ -129,13 +127,15 @@ describe("ThreadRepositoryPostgres", () => {
     it("should return detail thread correctly", async () => {
       // Arrange
       const threadId = "thread-123";
-      await UsersTableTestHelper.addUser({ id: "user-123" });
-      await ThreadTableTestHelper.addThread({
+      const payloadThread = {
         id: threadId,
         owner: "user-123",
         title: "Thread title test",
         body: "Thread body test",
-      });
+        date: new Date("2023-10-26T15:34:43.671Z"),
+      };
+      await UsersTableTestHelper.addUser({ id: "user-123", username: "ardi" });
+      await ThreadTableTestHelper.addThread(payloadThread);
 
       const threadRepositoryPostgres = new ThreadRepositoryPostgres(
         pool,
@@ -148,9 +148,13 @@ describe("ThreadRepositoryPostgres", () => {
 
       // Assert
       expect(detailThread).not.toBeUndefined();
-      expect(detailThread.id).toEqual("thread-123");
-      expect(detailThread.title).toEqual("Thread title test");
-      expect(detailThread.body).toEqual("Thread body test");
+      expect(detailThread).toEqual({
+        id: payloadThread.id,
+        title: payloadThread.title,
+        body: payloadThread.body,
+        date: payloadThread.date,
+        username: "ardi",
+      });
       expect(detailThread.id).toBeDefined();
       expect(detailThread.title).toBeDefined();
       expect(detailThread.body).toBeDefined();

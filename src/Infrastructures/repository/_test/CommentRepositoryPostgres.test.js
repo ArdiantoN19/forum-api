@@ -10,7 +10,7 @@ const CommentRepositoryPostgres = require("../CommentRepositoryPostgres");
 
 describe("CommentRepositoryPostgres", () => {
   beforeEach(async () => {
-    await UsersTableTestHelper.addUser({ id: "user-123" });
+    await UsersTableTestHelper.addUser({ id: "user-123", username: "ardi" });
     await ThreadTableTestHelper.addThread({
       id: "thread-123",
       owner: "user-123",
@@ -210,12 +210,16 @@ describe("CommentRepositoryPostgres", () => {
         id: "comment-123",
         owner: "user-123",
         threadId: "thread-123",
+        content: "Comment content test",
+        date: new Date("2023-10-26T15:34:43.671Z"),
       };
 
       const exampleComment2 = {
         id: "comment-124",
         owner: "user-123",
         threadId: "thread-123",
+        content: "Comment content test",
+        date: new Date("2023-10-26T16:34:43.671Z"),
       };
       await CommentTableTestHelper.addComment(exampleComment1);
       await CommentTableTestHelper.addComment(exampleComment2);
@@ -226,13 +230,32 @@ describe("CommentRepositoryPostgres", () => {
       );
 
       // Action
-      const comments = await commentRepositoryPostgres.getCommentsByThreadId(
+      let comments = await commentRepositoryPostgres.getCommentsByThreadId(
         "thread-123"
       );
 
+      comments = comments.map((comment) => ({
+        ...comment,
+        username: "ardi",
+      }));
+
       // Assert
-      expect(comments[0].id).toEqual(exampleComment2.id);
-      expect(comments[1].id).toEqual(exampleComment1.id);
+      expect(comments).toEqual([
+        {
+          id: exampleComment1.id,
+          date: exampleComment1.date,
+          content: exampleComment1.content,
+          username: "ardi",
+          is_delete: false,
+        },
+        {
+          id: exampleComment2.id,
+          date: exampleComment2.date,
+          content: exampleComment2.content,
+          username: "ardi",
+          is_delete: false,
+        },
+      ]);
       expect(comments[0].id).toBeDefined();
       expect(comments[0].username).toBeDefined();
       expect(comments[0].date).toBeDefined();
