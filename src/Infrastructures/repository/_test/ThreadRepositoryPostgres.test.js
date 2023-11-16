@@ -32,7 +32,7 @@ describe("ThreadRepositoryPostgres", () => {
       const fakeIdGenerator = () => "123";
       const threadRepositoryPostgres = new ThreadRepositoryPostgres(
         pool,
-        fakeIdGenerator
+        fakeIdGenerator,
       );
 
       // Action
@@ -58,7 +58,7 @@ describe("ThreadRepositoryPostgres", () => {
       const fakeIdGenerator = () => "123";
       const threadRepositoryPostgres = new ThreadRepositoryPostgres(
         pool,
-        fakeIdGenerator
+        fakeIdGenerator,
       );
 
       // Action
@@ -70,7 +70,7 @@ describe("ThreadRepositoryPostgres", () => {
           id: "thread-123",
           title: "Thread title test",
           owner: "user-123",
-        })
+        }),
       );
     });
   });
@@ -81,12 +81,12 @@ describe("ThreadRepositoryPostgres", () => {
       const threadId = "thread-123";
       const threadRepositoryPostgres = new ThreadRepositoryPostgres(
         pool,
-        () => {}
+        () => {},
       );
 
       // Action and Assert
       await expect(
-        threadRepositoryPostgres.verifyAvailableThread(threadId)
+        threadRepositoryPostgres.verifyAvailableThread(threadId),
       ).rejects.toThrowError(NotFoundError);
     });
 
@@ -99,12 +99,12 @@ describe("ThreadRepositoryPostgres", () => {
       });
       const threadRepositoryPostgres = new ThreadRepositoryPostgres(
         pool,
-        () => {}
+        () => {},
       );
 
       // Action and Assert
       await expect(
-        threadRepositoryPostgres.verifyAvailableThread("thread-123")
+        threadRepositoryPostgres.verifyAvailableThread("thread-123"),
       ).resolves.not.toThrowError(NotFoundError);
     });
   });
@@ -115,12 +115,12 @@ describe("ThreadRepositoryPostgres", () => {
       const threadId = "thread-123";
       const threadRepositoryPostgres = new ThreadRepositoryPostgres(
         pool,
-        () => {}
+        () => {},
       );
 
       // Action
       await expect(
-        threadRepositoryPostgres.getDetailThreadByThreadId(threadId)
+        threadRepositoryPostgres.getDetailThreadByThreadId(threadId),
       ).rejects.toThrowError(NotFoundError);
     });
 
@@ -139,7 +139,7 @@ describe("ThreadRepositoryPostgres", () => {
 
       const threadRepositoryPostgres = new ThreadRepositoryPostgres(
         pool,
-        () => {}
+        () => {},
       );
 
       // Action

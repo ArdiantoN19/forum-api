@@ -12,6 +12,15 @@
   },
   "rules": {
     "no-console": "off",
-    "linebreak-style": "off"
+    "linebreak-style": "off",
+    "quotes": "off",
+    "no-undef": "off",
+    "class-methods-use-this": "off",
+    "no-underscore-dangle": "off",
+    "implicit-arrow-linebreak": "off",
+    "function-paren-newline": "off",
+    "camelcase": "off",
+    "no-shadow": "off",
+    "operator-linebreak": "off"
   }
 }

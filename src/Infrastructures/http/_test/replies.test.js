@@ -8,7 +8,7 @@ const container = require("../../container");
 const pool = require("../../database/postgres/pool");
 const createServer = require("../createServer");
 
-describe("/threads/{threadId}/comments/{commentId}/replies", () => {
+describe("/threads/{threadId}/comments/{commentId}/replies endpoint", () => {
   afterEach(async () => {
     await UsersTableTestHelper.cleanTable();
     await ThreadTableTestHelper.cleanTable();
@@ -103,7 +103,7 @@ describe("/threads/{threadId}/comments/{commentId}/replies", () => {
       expect(response.statusCode).toEqual(400);
       expect(responseJson.status).toEqual("fail");
       expect(responseJson.message).toEqual(
-        "tidak dapat menambahkan reply comment, request payload tidak lengkap"
+        "tidak dapat menambahkan reply comment, request payload tidak lengkap",
       );
     });
 
@@ -142,7 +142,7 @@ describe("/threads/{threadId}/comments/{commentId}/replies", () => {
       expect(response.statusCode).toEqual(400);
       expect(responseJson.status).toEqual("fail");
       expect(responseJson.message).toEqual(
-        "tidak dapat menambahkan reply comment, tipe data tidak sesuai"
+        "tidak dapat menambahkan reply comment, tipe data tidak sesuai",
       );
     });
 
@@ -251,7 +251,7 @@ describe("/threads/{threadId}/comments/{commentId}/replies", () => {
       expect(response.statusCode).toEqual(403);
       expect(responseJson.status).toEqual("fail");
       expect(responseJson.message).toEqual(
-        "Anda tidak berhak mengakses resorce ini"
+        "Anda tidak berhak mengakses resorce ini",
       );
     });
 

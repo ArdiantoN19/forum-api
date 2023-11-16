@@ -32,8 +32,8 @@ describe("AddCommentReplyUseCase", () => {
           id: "reply-123",
           content: useCasePayload.content,
           owner: useCasePayload.owner,
-        })
-      )
+        }),
+      ),
     );
 
     const addCommentReply = new AddCommentReplyUseCase({
@@ -48,10 +48,10 @@ describe("AddCommentReplyUseCase", () => {
     expect(addedReply).toStrictEqual(new AddedReply(expectedAddedReply));
     expect(mockCommentRepository.verifyAvailableComment).toBeCalledWith(
       useCasePayload.commentId,
-      useCasePayload.threadId
+      useCasePayload.threadId,
     );
     expect(mockReplyRepository.addCommentReply).toBeCalledWith(
-      new NewReply(useCasePayload)
+      new NewReply(useCasePayload),
     );
   });
 });
